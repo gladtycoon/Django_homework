@@ -1,33 +1,57 @@
-from django.http import HttpResponse
-from django.shortcuts import get_object_or_404, render
+from django.contrib import messages
+from django.contrib.messages.views import SuccessMessageMixin
+from django.urls import reverse_lazy
+from django.views.generic import (CreateView, DeleteView, DetailView, ListView,
+                                  TemplateView, UpdateView)
 
-from .models import Product
-
-
-def home(request):
-    return render(request, "home.html")
-
-
-# def contacts(request):
-#     return render(request, 'contacts.html')
+from catalog.forms import ProductForm
+from catalog.models import Product
 
 
-def contacts(request):
-    if request.method == "POST":
-        name = request.POST.get("name")
-        phone = request.POST.get("phone")
-        message = request.POST.get("message")
-        return HttpResponse(f"Спасибо, {name}! Мы свяжемся с вами.")
-    return render(request, "contacts.html")
+class ProductListView(ListView):
+    model = Product
+    template_name = "catalog/product_list.html"
+    context_object_name = "products"
 
 
-def products_list(request):
-    products = Product.objects.all()
-    context = {"products": products}
-    return render(request, "catalog/products_list.html", context)
+class HomeView(TemplateView):
+    template_name = "home.html"
 
 
-def product_detail(request, pk):
-    product = get_object_or_404(Product, pk=pk)
-    context = {"product": product}
-    return render(request, "catalog/product_detail.html", context)
+class ContactsView(TemplateView):
+    template_name = "contacts.html"
+
+
+class ProductDetailView(DetailView):
+    model = Product
+    template_name = "catalog/product_detail.html"
+    context_object_name = "product"
+
+
+class ProductCreateView(SuccessMessageMixin, CreateView):
+    model = Product
+    form_class = ProductForm
+    template_name = "catalog/product_form.html"
+    success_url = reverse_lazy("catalog:product_list")
+    success_message = 'Продукт "%(name)s" успешно создан!'
+
+
+class ProductUpdateView(SuccessMessageMixin, UpdateView):
+    model = Product
+    form_class = ProductForm
+    template_name = "catalog/product_form.html"
+    success_url = reverse_lazy("catalog:product_list")
+    success_message = 'Продукт "%(name)s" успешно обновлен!'
+
+
+class ProductDeleteView(DeleteView):
+    model = Product
+    template_name = "catalog/product_confirm_delete.html"
+    success_url = reverse_lazy("catalog:product_list")
+
+    def delete(self, request, *args, **kwargs):
+        obj = self.get_object()
+        product_name = obj.name
+        response = super().delete(request, *args, **kwargs)
+        messages.success(request, f'Продукт "{product_name}" успешно удален!')
+        return response
