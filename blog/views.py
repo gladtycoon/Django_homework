@@ -1,4 +1,4 @@
-from django.urls import reverse, reverse_lazy  # ← импортируем оба
+from django.urls import reverse, reverse_lazy
 from django.views.generic import (CreateView, DeleteView, DetailView, ListView,
                                   UpdateView)
 
@@ -39,9 +39,7 @@ class PostUpdateView(UpdateView):
     template_name = "blog/post_form.html"
 
     def get_success_url(self):
-        return reverse(
-            "blog:post_detail", kwargs={"pk": self.object.pk}
-        )  # ← исправлено
+        return reverse("blog:post_detail", kwargs={"pk": self.object.pk})
 
 
 class PostDeleteView(DeleteView):

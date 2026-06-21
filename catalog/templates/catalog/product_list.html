@@ -3,6 +3,9 @@
 {% block content %}
 <div class="album py-5 bg-body-tertiary">
         <div class="container">
+            <div class="mb-3">
+                <a class="btn btn-success" href="{% url 'catalog:product_create' %}" role="button">➕ Добавить продукт</a>
+            </div>
             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
                 {% for product in object_list %}
                 <div class="col">
@@ -14,8 +17,9 @@
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="btn-group">
                                     <a class="btn btn-primary" href="{% url 'catalog:product_detail' product.pk %}" role="button">Подробнее</a>
+                                    <a href="{% url 'catalog:product_update' product.pk %}" class="btn btn-warning">Редактировать</a>
                                 </div>
-                                <small class="text-body-secondary">Few moments before...</small></div>
+                                <small class="text-body-secondary">1 min...</small></div>
                         </div>
                     </div>
                 </div>
