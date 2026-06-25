@@ -6,7 +6,7 @@
             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
                 <div class="col">
                     <div class="card shadow-sm">
-                        <img src="{{ product.image | media_filter }}" class="card-img-top">
+                        <img src="{{ product.image | media_filter }}" style="height: 475px; object-fit: cover;"">
                         <div class="card-body">
                             <p class="card-text">Наименование: {{ object.name| upper }}</p>
                             <p class="card-text">Описание: {{ object.description }}</p>
