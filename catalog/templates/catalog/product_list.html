@@ -4,16 +4,16 @@
 <div class="album py-5 bg-body-tertiary">
     <div class="container">
         {% if messages %}
-            <div class="row mb-3">
-                <div class="col-12">
-                    {% for message in messages %}
-                        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-                            {{ message }}
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
-                    {% endfor %}
+        <div class="row mb-3">
+            <div class="col-12">
+                {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
+                {% endfor %}
             </div>
+        </div>
         {% endif %}
         <div class="mb-3">
             <a class="btn btn-success" href="{% url 'catalog:product_create' %}" role="button">➕ Добавить продукт</a>
@@ -23,17 +23,34 @@
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
             {% for product in object_list %}
             <div class="col">
-                <div class="card shadow-sm">
-                    <img src="{{ product.image | media_filter }}" style="height: 475px; object-fit: cover;">
-                    <div class="card-body">
-                        <p class="card-text">{{ product.name| upper }}</p>
-                        <p class="card-text">{{ product.description|truncatechars:100 }}</p>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div class="btn-group">
-                                <a class="btn btn-primary" href="{% url 'catalog:product_detail' product.pk %}" role="button">Подробнее</a>
-                                <a href="{% url 'catalog:product_update' product.pk %}" class="btn btn-warning">Редактировать</a>
-                            </div>
-                            <small class="text-body-secondary">1 min...</small>
+                <div class="card shadow-sm h-100 d-flex flex-column">
+                    <img src="{{ product.image | media_filter }}" style="height: 250px; object-fit: cover; width: 100%;">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">{{ product.name| upper }}</h5>
+                        <p class="card-text">
+                            {% if product.is_published %}
+                            <span class="badge bg-success">Опубликован</span>
+                            {% else %}
+                            <span class="badge bg-secondary">Снят с публикации</span>
+                            {% endif %}
+                        </p>
+                        <p class="card-text flex-grow-1" style="overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;">
+                            {{ product.description|truncatechars:100 }}
+                        </p>
+                        <div class="d-flex flex-wrap gap-1 justify-content-center mt-auto">
+                            <a class="btn btn-primary btn-sm" href="{% url 'catalog:product_detail' product.pk %}" role="button">Подробнее</a>
+
+                            {% if user == product.owner %}
+                            <a href="{% url 'catalog:product_update' product.pk %}" class="btn btn-warning btn-sm">Редактировать</a>
+                            {% endif %}
+
+                            {% if user == product.owner or perms.catalog.delete_product %}
+                            <a href="{% url 'catalog:product_delete' product.pk %}" class="btn btn-danger btn-sm">Удалить</a>
+                            {% endif %}
+
+                            {% if perms.catalog.can_unpublish_product %}
+                            <a href="{% url 'catalog:product_unpublish' product.pk %}" class="btn btn-warning btn-sm">Отменить публикацию</a>
+                            {% endif %}
                         </div>
                     </div>
                 </div>

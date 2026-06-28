@@ -101,7 +101,8 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 AUTH_USER_MODEL = "users.User"
 
 LOGIN_REDIRECT_URL = "/"
-LOGOUT_REDIRECT_URL = "/"
+LOGIN_URL = "/users/login/"
+LOGOUT_REDIRECT_URL = "/users/login/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
@@ -115,5 +116,3 @@ EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
 
 SERVER_EMAIL = EMAIL_HOST_USER
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
-
-LOGIN_URL = "/users/login/"
