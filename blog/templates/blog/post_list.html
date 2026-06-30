@@ -8,9 +8,9 @@
     <div class="row">
         {% for post in posts %}
         <div class="col-md-4">
-            <div class="card mb-4">
+            <div class="card h-100 mb-4">
                 {% if post.preview %}
-                <img src="{{ post.preview.url }}" class="card-img-top" style="height: 200px; object-fit: cover;">
+                <img src="{{ post.preview.url }}" class="card-img-top" style="height: 250px; object-fit: cover;">
                 {% endif %}
                 <div class="card-body">
                     <h5 class="card-title">{{ post.title }}</h5>

@@ -22,6 +22,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "catalog",
     "blog",
+    "users",
 ]
 
 MIDDLEWARE = [
@@ -96,3 +97,22 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 MEDIA_URL = "/media/"
 
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+
+AUTH_USER_MODEL = "users.User"
+
+LOGIN_REDIRECT_URL = "/"
+LOGIN_URL = "/users/login/"
+LOGOUT_REDIRECT_URL = "/users/login/"
+
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = "smtp.yandex.ru"
+EMAIL_PORT = 465
+EMAIL_USE_TLS = False
+EMAIL_USE_SSL = True
+EMAIL_HOST_USER = "someclient@yandex.ru"
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
+
+SERVER_EMAIL = EMAIL_HOST_USER
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER

@@ -14,6 +14,12 @@
         <a class="p-2 btn btn-outline-primary" href="{% url 'catalog:product_list' %}">Каталог</a>
         <a class="p-2 btn btn-outline-primary" href="{% url 'contacts' %}">Контакты</a>
         <a class="p-2 btn btn-outline-primary" href="{% url 'blog:post_list' %}">Блог</a>
+        {% if user.is_authenticated %}
+        <a class="p-2 btn btn-outline-primary" href="{% url 'users:login' %}">Выход</a>
+        {% else %}
+        <a class="p-2 btn btn-outline-primary" href="{% url 'users:login' %}">Вход</a>
+        <a class="p-2 btn btn-outline-primary" href="{% url 'users:register' %}">Регистрация</a>
+        {% endif %}
     </nav>
 </div>
 
@@ -72,7 +78,7 @@
                         <li>- Бесплатный онлайн-кинотеатр</li>
                         <li>- Антивирус в подарок</li>
                     </ul>
-                    <button type="button" class="btn btn-lg btn-block btn-outline-secondary">Купить</button>
+                    <button type="button" class="btn btn-lg btn-block btn-outline-primary">Купить</button>
                 </div>
             </div>
         </div>
