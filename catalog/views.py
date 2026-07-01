@@ -16,12 +16,16 @@ from django.views.generic import (
 
 from catalog.forms import ProductForm
 from catalog.models import Product
+from catalog.services import get_products_from_cache
 
 
 class ProductListView(ListView):
     model = Product
     template_name = "catalog/product_list.html"
     context_object_name = "products"
+
+    def get_queryset(self):
+        return get_products_from_cache()
 
 
 class HomeView(TemplateView):
